@@ -1,0 +1,78 @@
+// Promise com fetch =================================
+
+fetch("https://jsonplaceholder.typicode.com/users").then((reponse) => {
+  reponse
+    .json()
+    .then((data) => {
+      show(data);
+    })
+    .catch((err) => console.error(err))
+    .finally(() => console.log("Finalizado!"));
+});
+
+function show(data) {
+  data.forEach((element) => {
+    console.log(element.name);
+  });
+}
+
+// Promise com axios ===================================
+
+import axios from "axios";
+
+axios.get("https://api.github.com/users/AugustoSMoreira")
+.then(res => axios.get(res.data.repos_url))
+.then(repo => console.log(repo.data))
+.catch(erro => console.log(erro))
+
+// Promise.all ==========================================
+
+import axios from "axios";
+
+Promise.all([
+  axios.get('https://api.github.com/users/AugustoSMoreira'),
+  axios.get('https://api.github.com/users/temirovazat')
+])
+.then(response => {
+  console.log(response[0].data.login)
+  console.log(response[1].data.login)
+})
+.catch(erro => console.log(erro.message))
+
+// Promise Async Await ===================================
+
+const aceito = false;
+
+const promessa = new Promise((resolve, reject) => {
+  if (aceito) {
+    return resolve("Foi aceito!");
+  }
+  return reject("Foi recusado!");
+});
+
+async function start() {
+  try {
+    const result = await promessa;
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+start()
+
+// Função async/await com promise
+
+async function start() {
+  try {
+    const url = "https://jsonplaceholder.typicode.com/users";
+    const user = await fetch(url).then((u) => u.json());
+    user.forEach((element) => {
+      console.log(element.name);
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+start();
